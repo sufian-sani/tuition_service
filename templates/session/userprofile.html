@@ -1,0 +1,28 @@
+{% extends 'basic.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img src="{{user.userprofile.image.url}}" class="w-50" alt="">
+    </div>
+    <div class="col">
+      <button type="" class="btn btn-secondary" name=""><a href="/tuition/pdf">Pdf</a></button><br>
+      <button type="" class="btn btn-info" name=""><a href="/session/tuitionpro">Tuition Profile Create</a></button>
+      <br>
+      Name={{user.username}} <br>
+      Blood_group={{user.userprofile.blood_group}} <br>
+      gender={{user.userprofile.gender}} <br>
+      nationality={{user.userprofile.nationality}} <br>
+      religion={{user.userprofile.religion}} <br>
+      biodata={{user.userprofile.biodata}} <br>
+      profession={{user.userprofile.profession}} <br>
+      birth_date={{user.userprofile.birth_date}} <br>
+      address={{user.userprofile.address}} <br>
+      phone={{user.userprofile.phone}} <br>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

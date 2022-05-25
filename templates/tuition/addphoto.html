@@ -1,0 +1,15 @@
+{% extends 'basic.html' %}
+{% load crispy_forms_tags %}
+{% block title%}Add Photo{% endblock %}
+{% block body %}
+{% if user.is_authenticated %}
+<div class="col-md-6 offset-md-3">
+        <form action="/tuition/addphoto/{{id}}/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <legend class="border-bottom text-center mb-4"><h2>Add New Photo</h2></legend>
+                {{ form|crispy }}
+            <button class="btn btn-outline-info " type="submit">Submit </button>
+        </form>
+</div>
+{% endif %}
+{% endblock %}

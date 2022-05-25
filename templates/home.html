@@ -1,0 +1,22 @@
+{% extends 'basic.html' %}
+
+{% block body %}
+
+<div class="container">
+
+  <h1 class="text-center">This is home page</h1>
+  {% for n in name %}
+  {{n}}<br>
+  {% endfor %}
+
+  <hr>
+
+  {{mes}}
+  <hr>
+  {{mes2}}
+
+  <hr>
+
+</div>
+
+{% endblock %}

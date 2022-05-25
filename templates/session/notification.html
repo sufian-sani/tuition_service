@@ -1,0 +1,23 @@
+{% extends 'basic.html' %}
+{% load crispy_forms_tags %}
+{% load notifications_tags %}
+{% block body %}
+
+
+<div class="container">
+
+{% notifications_unread as unread_count %}
+  {% if unread_count %}
+    You have <b> {% live_notify_badge %} </b> unread notifications.
+    {% live_notify_list %}
+    {{ live_notify_list }}
+    {% endif %}
+    <h1>Your All Notifications</h1>
+    {% for i in user.notifications.unread %}
+    {{ i|safe }}
+    <br>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

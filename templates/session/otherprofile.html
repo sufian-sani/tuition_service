@@ -1,0 +1,52 @@
+{% extends 'basic.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img src="{{user.userprofile.image.url}}" class="w-50" alt="">
+    </div>
+    <div class="col">
+      <button type="" class="btn btn-secondary" name=""><a href="/tuition/pdf">Pdf</a></button><br>
+      <button type="" class="btn btn-info" name=""><a href="/session/tuitionpro">Tuition Profile Create</a></button>
+      <br>
+      Name={{user.userprofile}} <br>
+      {% if user.userprofile %}
+      Blood_group={{user.userprofile.blood_group}} <br>
+      gender={{user.userprofile.gender}} <br>
+      nationality={{user.userprofile.nationality}} <br>
+      religion={{user.userprofile.religion}} <br>
+      biodata={{user.userprofile.biodata}} <br>
+      profession={{user.userprofile.profession}} <br>
+      birth_date={{user.userprofile.birth_date}} <br>
+      address={{user.userprofile.address}} <br>
+      phone={{user.userprofile.phone}} <br>
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="con-md-6">
+      {% if user.tuitionprofile %}
+      <div class="my-5">
+      <b><h3 class="border-bottom m-4"><legend> Tuition Related Information</legend></h3></b>
+      district={{user.tuitionprofile.district}} <br>
+      style={{user.tuitionprofile.style}} <br>
+      approach={{user.tuitionprofile.approach}} <br>
+      medium={{user.tuitionprofile.medium}} <br>
+      salary={{user.tuitionprofile.salary}} <br>
+      days_per_week={{user.tuitionprofile.days_per_week}} <br>
+      education={{user.tuitionprofile.education}} <br>
+      status={{user.tuitionprofile.status}} <br>
+      Subject= {% for s in user.tuitionprofile.subject.all %} {{s}}
+      {% if not forloop.last %},{% endif %}
+      {% endfor %}  <br>
+      {% endif %}
+      Class= {% for s in user.tuitionprofile.class_in.all %} {{s}}
+      {% if not forloop.last %},{% endif %}
+      {% endfor %}  <br>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

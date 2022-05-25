@@ -1,0 +1,176 @@
+{% extends 'basic.html' %}
+{% load humanize %}
+{% load tag %}
+{% block body %}
+
+<div class="container">
+  <h1 class="text-center">Post Detail:</h1>
+  <hr>
+  <div class="fb-like" data-href="http://127.0.0.1:8000/tuition/postdetail/{{object.id}}/" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
+  <div class="col-md-6">
+    <img src="{{object.image.url}}" alt=""  class="rounded-circle w-50 img-thumbnail">
+  </div>
+  <div class="col-md-8 offset-md-2">
+    Title={{object.uppercase}}
+    <br>
+    by: {{object.user.username}} at: {{object.created_at| naturaltime}}
+    <br>
+    {% if request.user == object.user %}
+    <a href="/tuition/edit/{{object.id}}" class="btn btn-danger">Edit</a>
+    <br><br>
+    <a href="/tuition/addphoto/{{object.id}}" class="btn btn-danger">Addphoto</a>
+    <br><br>
+    <a href="/tuition/delete/{{object.id}}" class="btn btn-danger">Delete</a>
+    {% endif %}
+
+    <br>
+    Subject = {{object.get_subject_list}}
+    <br>
+    Class = {{object.get_class_list}}
+    <br>
+    Category = {{object.category}}
+    <br>
+    Salary = {{object.salary}}
+    <br>
+    Medium = {{object.medium}}
+    <br>
+    Created = {{object.created_at}}
+    <br>
+    Available = {% if object.available %} Yes {% else %} No {% endif %}
+    <br>
+    <p>Details: {{object.details}}</p>
+  </div>
+
+  <div class="">
+    <p>{{object.total_views}} Peoples Seen this Post</p>
+    <p>{{object.total_likes}} Peoples liked this Post</p>
+  </div>
+  <div class="">
+    <form class="" action="/tuition/likepost/{{object.id}}/" method="post">
+      {% csrf_token %}
+
+      {% if liked %}
+      <button type="submit" name="" class="btn btn-warning">Unlike</button>
+      {% else %}
+      <button type="submit" name="" class="btn btn-primary">Like</button>
+      {% endif %}
+    </form>
+  </div>
+  <div class="">
+    <a href="/tuition/apply/{{object.id}}/" class="btn">Apply for this tuition</a>
+  </div>
+
+  <div class="">
+    <form class="" action="/tuition/addcomment/" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="">Your Comment</label>
+        <input type="text" name="comment" value="" placeholder="Enter your Comment" class="form-control">
+        <input type="hidden" name="postid" value="{{object.id}}">
+        <input type="hidden" name="parentid" value="">
+      </div>
+      <button type="submit" name="">Add Comment</button>
+    </form>
+  </div>
+
+  <div class="">
+    {% for comment in comments %}
+    <div class="row">
+      <div class="col-md-1">
+        <img src="{{comment.user.userprofile.image.url}}" class="img-thumbnail rounded" alt="" style="width:45px;">
+      </div>
+      <div class="col-md-11">
+        <b>{{comment.user.username}}</b> <span class="bedge bedge-secondary">{{comment.created_at | naturaltime}}</span>
+        <div class="">
+          {{comment.text}}
+        </div>
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Delete Comment
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure to delete your comment?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger"><a href="/tuition/commentdelete/{{comment.id}}/">Delete</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+        <div class="row">
+          <form class="" action="/tuition/addcomment/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="">Your Reply</label>
+              <input type="text" name="comment" value="" placeholder="Enter your Comment" class="form-control">
+              <input type="hidden" name="postid" value="{{object.id}}">
+              <input type="hidden" name="parentid" value="{{comment.id}}">
+            </div>
+            <button type="submit" name="">Add Reply</button>
+          </form>
+        </div>
+
+        {% for reply in DicofReply|get_reply:comment.id %}
+        <div class="row">
+          <div class="col-md-1">
+            <img src="{{reply.user.userprofile.image.url}}" class="img-thumbnail rounded" alt="" style="width:45px;">
+          </div>
+          <div class="col-md-11">
+            <b>{{reply.user.username}}</b> <span class="bedge bedge-secondary">{{reply.created_at | naturaltime}}</span>
+            <div class="">
+              {{reply.text}}
+              <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal{{reply.id}}">
+        Delete Reply
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal{{reply.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Delete Reply</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure to delete your comment?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger"><a href="/tuition/commentdelete/{{reply.id}}/">Delete</a></button>
+            </div>
+          </div>
+        </div>
+      </div>
+            </div>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="">
+    <div class="fb-comments" data-href="http://127.0.0.1:8000/tuition/postdetail/{{object.id}}/" data-width="" data-numposts="5"></div>
+  </div>
+
+</div>
+
+
+{% endblock %}

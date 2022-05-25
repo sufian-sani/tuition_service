@@ -1,0 +1,20 @@
+{% extends 'basic.html' %}
+{% block body %}
+
+<div class="container">
+  <h1 class="text-center">All Posts Are Given Below:</h1>
+  <hr>
+  {% for p in results %}
+  <div class="col-md-6 offset-md-2 m-1 mb-3 p-3 border">
+    {{p.title}}<br>
+    by {{p.user.username}} <br>
+    <hr>
+    Details: {{p.details}}
+    <a href="/tuition/postdetail/{{p.pk}}">...Read More</a>
+  </div>
+  {% endfor %}
+
+
+</div>
+
+{% endblock %}

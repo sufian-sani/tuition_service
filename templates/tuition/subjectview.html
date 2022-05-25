@@ -1,0 +1,12 @@
+{% extends 'basic.html' %}
+{% block body %}
+
+
+<h4>{{sub.name}}</h4>
+<br>
+{% for p in sub.subject_set.all %}
+{{p.title}} by:
+{{p.user.username}}<br>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'basic.html' %}
+{% block body %}
+
+<div class="container">
+
+  <div class="col-md-6 offset-md-3">
+    <h1>Filter Post</h1>
+    <form class="" action="{% url 'tuition:filter' %}" method="POST">
+      <div class="input-group mb-3">
+        <select class="custom-select" id="inputGroupSelect02" name='subject'>
+          <option></option>
+          {% for i in subjects %}
+            <option value="{{i}}">{{i}}</option>
+          {% endfor %}
+        </select>
+        <div class="input-group-append">
+          <label class="input-group-text" for="inputGroupSelect02">Subjects</label>
+        </div>
+      </div>
+
+      <div class="input-group mb-3">
+        <select class="custom-select" id="inputGroupSelect02" name='class_in'>
+          <option></option>
+          {% for i in classes %}
+            <option value="{{i}}">{{i}}</option>
+          {% endfor %}
+        </select>
+        <div class="input-group-append">
+          <label class="input-group-text" for="inputGroupSelect02">Class</label>
+        </div>
+      </div>
+
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="available">
+        <label class="form-check-label" for="exampleCheck1">Only Available</label>
+      </div>
+
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Salary From</label>
+        <input type="number" class="form-control" name="salary_from" id="exampleFormControlInput1">
+      </div>
+
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Salary to</label>
+        <input type="number" class="form-control" name="salary_to" id="exampleFormControlInput1">
+      </div>
+
+      {% csrf_token %}
+      <button type="submit" name="">Filter Posts</button>
+    </form>
+  </div>
+
+  <h1 class="text-center">All Posts Are Given Below:</h1>
+  <hr>
+  {% for p in posts %}
+  <div class="col-md-8 offset-md-2 m-3 mb-3 p-3 border">
+
+    <div class="row my-2 position-relative">
+      <div class="col d-flex flex-column">
+        <strong class="d-inline-block mb-2">
+        <div class="">
+          <h3><a href="/session/otherprofile/{{p.user.username}}/"> {% if p.user.get_full_name %}{{p.user.get_full_name}}{% else %}{{p.user.username}}{% endif %}</a></h3>
+          <span class="badge badge-secondary">{{p.created_at}}</span>
+        </div>
+        -Searching For a teacher
+      </strong>
+      <div class="previes">
+        for <b>{{p.medium}}</b>'s Student <br>
+        in {{p.district}} District <br>
+        <b>Salary: </b> {{p.salary}}<br>
+        <p class="card-text">
+          <a href="/tuition/postdetail/{{p.pk}}">...Details</a>
+        </p>
+      </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+
+</div>
+
+{% endblock %}
